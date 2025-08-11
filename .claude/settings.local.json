@@ -3,7 +3,9 @@
     "allow": [
       "Bash(./mvnw:*)",
       "Bash(timeout:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(taskkill:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }
