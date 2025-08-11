@@ -18,6 +18,9 @@ public class FirebaseService {
 
     @Autowired
     private FirebaseConfig firebaseConfig;
+    
+    @Autowired
+    private IdGeneratorService idGeneratorService;
 
     private DatabaseReference databaseReference;
 
@@ -30,16 +33,25 @@ public class FirebaseService {
     // User operations
     public CompletableFuture<User> saveUser(User user) {
         CompletableFuture<User> future = new CompletableFuture<>();
-        DatabaseReference userRef = databaseReference.child("users").push();
-        user.setId(userRef.getKey());
+        
+        // Generate custom ID for the user
+        idGeneratorService.generateId(IdGeneratorService.IdType.USER)
+            .thenAccept(customId -> {
+                user.setId(customId);
+                DatabaseReference userRef = databaseReference.child("users").child(customId);
 
-        userRef.setValue(user, (databaseError, databaseReference) -> {
-            if (databaseError != null) {
-                future.completeExceptionally(databaseError.toException());
-            } else {
-                future.complete(user);
-            }
-        });
+                userRef.setValue(user, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        future.completeExceptionally(databaseError.toException());
+                    } else {
+                        future.complete(user);
+                    }
+                });
+            })
+            .exceptionally(throwable -> {
+                future.completeExceptionally(throwable);
+                return null;
+            });
 
         return future;
     }
@@ -101,16 +113,25 @@ public class FirebaseService {
     // Product operations
     public CompletableFuture<Product> saveProduct(Product product) {
         CompletableFuture<Product> future = new CompletableFuture<>();
-        DatabaseReference productRef = databaseReference.child("products").push();
-        product.setId(productRef.getKey());
+        
+        // Generate custom ID for the product
+        idGeneratorService.generateId(IdGeneratorService.IdType.PRODUCT)
+            .thenAccept(customId -> {
+                product.setId(customId);
+                DatabaseReference productRef = databaseReference.child("products").child(customId);
 
-        productRef.setValue(product, (databaseError, databaseReference) -> {
-            if (databaseError != null) {
-                future.completeExceptionally(databaseError.toException());
-            } else {
-                future.complete(product);
-            }
-        });
+                productRef.setValue(product, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        future.completeExceptionally(databaseError.toException());
+                    } else {
+                        future.complete(product);
+                    }
+                });
+            })
+            .exceptionally(throwable -> {
+                future.completeExceptionally(throwable);
+                return null;
+            });
 
         return future;
     }
@@ -265,16 +286,25 @@ public class FirebaseService {
     // Order operations
     public CompletableFuture<Order> saveOrder(Order order) {
         CompletableFuture<Order> future = new CompletableFuture<>();
-        DatabaseReference orderRef = databaseReference.child("orders").push();
-        order.setId(orderRef.getKey());
+        
+        // Generate custom ID for the order
+        idGeneratorService.generateId(IdGeneratorService.IdType.ORDER)
+            .thenAccept(customId -> {
+                order.setId(customId);
+                DatabaseReference orderRef = databaseReference.child("orders").child(customId);
 
-        orderRef.setValue(order, (databaseError, databaseReference) -> {
-            if (databaseError != null) {
-                future.completeExceptionally(databaseError.toException());
-            } else {
-                future.complete(order);
-            }
-        });
+                orderRef.setValue(order, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        future.completeExceptionally(databaseError.toException());
+                    } else {
+                        future.complete(order);
+                    }
+                });
+            })
+            .exceptionally(throwable -> {
+                future.completeExceptionally(throwable);
+                return null;
+            });
 
         return future;
     }
