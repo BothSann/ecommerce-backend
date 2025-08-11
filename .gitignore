@@ -31,4 +31,38 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Sensitive Data ###
+# Firebase service account key
+firebase-service-account.json
+**/firebase-service-account.json
+
+# Environment variables and sensitive configuration
+.env
+.env.local
+.env.development
+.env.production
+application-*.properties
+!application.properties
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs with potential sensitive data
+*.log
+logs/
+
+# Private keys and certificates
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Backup files that might contain sensitive data
+*.bak
+*.backup
+*.dump
+
 CLAUDE.md
