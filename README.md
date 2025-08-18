@@ -331,7 +331,7 @@ logging.level.org.springframework.security=DEBUG
 
 
 
-    
+
 // Networking
 
 // Image loading
